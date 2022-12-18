@@ -3,12 +3,13 @@ import {
 	BrowserWindow,
 	BrowserWindowConstructorOptions,
 } from "electron";
+import path from "path";
 import Store from "electron-store";
 
 export default (
-	windowName: string,
+	windowName: string,	
 	options: BrowserWindowConstructorOptions
-): BrowserWindow => {
+	): BrowserWindow => {
 	const key = "window-state";
 	const name = `window-state-${windowName}`;
 	const store = new Store({ name });
@@ -24,6 +25,7 @@ export default (
 	const getCurrentPosition = () => {
 		const position = win.getPosition();
 		const size = win.getSize();
+		
 		return {
 			x: position[0],
 			y: position[1],
@@ -43,6 +45,7 @@ export default (
 
 	const resetToDefaults = () => {
 		const bounds = screen.getPrimaryDisplay().bounds;
+
 		return Object.assign({}, defaultSize, {
 			x: (bounds.width - defaultSize.width) / 2,
 			y: (bounds.height - defaultSize.height) / 2,
@@ -74,11 +77,13 @@ export default (
 		...options,
 		...state,
 		webPreferences: {
+			preload: path.join(__dirname, "preload.js"),
 			nodeIntegration: true,
-			contextIsolation: false,
+			contextIsolation: true,
 			...options.webPreferences,
 		},
 	};
+
 	win = new BrowserWindow(browserOptions);
 
 	win.on("close", saveState);
