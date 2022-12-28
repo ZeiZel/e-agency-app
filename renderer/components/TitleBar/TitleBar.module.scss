@@ -1,0 +1,19 @@
+.titleBar {
+	@apply absolute top-0 left-0 w-full h-10 flex;
+
+	background: var(--bg-title-bar);
+
+	border-bottom: 3px solid #343b48;
+
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+}
+
+.titleBox {
+}
+
+.titleBarName {
+}
+
+.buttonBox {
+}

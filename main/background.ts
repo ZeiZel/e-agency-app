@@ -1,6 +1,7 @@
-import { app } from "electron";
+import { app, ipcMain } from "electron";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
+import {bootstrap} from "./main";
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 
@@ -11,11 +12,18 @@ if (isProd) {
 }
 
 (async () => {
-	await app.whenReady();
+	await app.whenReady().then(()=> {
+		const boot = bootstrap();
+	});
 
 	const mainWindow = createWindow("main", {
-		width: 1000,
-		height: 600,
+		width: 1200,
+		height: 680,
+		minWidth: 700,
+		minHeight: 600,
+		maxWidth: 1920,
+		maxHeight: 1080,
+		frame: false,
 	});
 
 	if (isProd) {
